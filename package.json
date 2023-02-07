@@ -5,7 +5,7 @@
   "exports": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "dist/main.js",
+    "start": "node dist/main.js",
     "dev": "ts-node src/main.ts",
     "build": "run-s clean compile",
     "compile": "tsc",
