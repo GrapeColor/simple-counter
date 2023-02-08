@@ -1,9 +1,12 @@
 import cron from 'node-cron';
 import dateFormat from 'dateformat';
 import Express from 'express';
-import { writeFile } from 'fs';
+import { mkdir, writeFile } from 'fs/promises';
 
 const countMap = new Map<string, number>();
+
+mkdir('./out/')
+	.catch(() => console.error());
 
 Express()
 	.get('/count/:id', (request, response) => {
@@ -27,6 +30,7 @@ cron.schedule('0 * * * *', (now) => {
 	writeFile(
 		`./out/counts_${dateFormat(now, 'yyyy-mm-dd_HH-MM')}.json`,
 		JSON.stringify(countObj, undefined, 2),
-		(err) => err ? console.log(err) : countMap.clear(),
-	);
+	)
+		.then(() => countMap.clear())
+		.catch(() => console.error());
 });
